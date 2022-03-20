@@ -3,11 +3,14 @@ from r2point import R2Point
 from convex import Void
 
 f = Void()
+print('Введите координаты точки')
+point = R2Point()
+print('Введите координаты точек, образующж оболочку')
 try:
     while True:
         a = R2Point()
-        print(f"Лежит ли точка внутри выпуклой оболочки? ---> {f.point_is_inside(a)}")
         f = f.add(a)
+        print(f"Лежит ли точка внутри выпуклой оболочки? ---> {f.point_is_inside(point)}")
         print(f"S = {f.area()}, P = {f.perimeter()}")
         print()
 except(EOFError, KeyboardInterrupt):

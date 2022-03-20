@@ -17,9 +17,6 @@ class Void(Figure):
     def add(self, p):
         return Point(p)
 
-    def point_is_inside(self, p):
-        return False
-
 class Point(Figure):
     """ "Одноугольник" """
 
