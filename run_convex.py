@@ -5,7 +5,9 @@ from convex import Void
 f = Void()
 try:
     while True:
-        f = f.add(R2Point())
+        a = R2Point()
+        print(f"Лежит ли точка внутри выпуклой оболочки? ---> {f.point_is_inside(a)}")
+        f = f.add(a)
         print(f"S = {f.area()}, P = {f.perimeter()}")
         print()
 except(EOFError, KeyboardInterrupt):

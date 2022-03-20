@@ -11,13 +11,14 @@ class Figure:
     def area(self):
         return 0.0
 
-
 class Void(Figure):
     """ "Hульугольник" """
 
     def add(self, p):
         return Point(p)
-
+    
+    def point_is_inside(self, p):
+        return False
 
 class Point(Figure):
     """ "Одноугольник" """
@@ -28,6 +29,8 @@ class Point(Figure):
     def add(self, q):
         return self if self.p == q else Segment(self.p, q)
 
+    def point_is_inside(self, q):
+        return self.p == q
 
 class Segment(Figure):
     """ "Двуугольник" """
@@ -47,6 +50,12 @@ class Segment(Figure):
             return Segment(r, self.q)
         else:
             return self
+
+    def point_is_inside(self, r):
+        if R2Point.is_triangle(self.p, self.q, r):
+            return False
+        else:
+            return r.is_inside(self.p, self.q)
 
 
 class Polygon(Figure):
@@ -110,6 +119,13 @@ class Polygon(Figure):
             self.points.push_first(t)
 
         return self
+
+    def point_is_inside(self, t):
+        for n in range(self.points.size()):
+            if t.is_light(self.points.last(), self.points.first()):
+                break
+            self.points.push_last(self.points.pop_first())
+        return not t.is_light(self.points.last(), self.points.first())
 
 
 if __name__ == "__main__":
