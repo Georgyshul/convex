@@ -30,6 +30,9 @@ class TestVoid:
     def test_add(self):
         assert isinstance(self.f.add(R2Point(0.0, 0.0)), Point)
 
+    # Точка не принадлежит оболочке типа Void
+    def test_point_is_inside1(self):
+        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == False
 
 class TestPoint:
 
@@ -61,6 +64,13 @@ class TestPoint:
     def test_add2(self):
         assert isinstance(self.f.add(R2Point(1.0, 0.0)), Segment)
 
+    # Точка принадлежит выпуклой оболочке, состоящей из точки с такими же координатами
+    def test_point_is_inside2(self):
+        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == True
+
+    # Иначе точка не принадлежит оболочке
+    def test_point_is_inside3(self):
+        assert self.f.point_is_inside(R2Point(1.0, 0.0)) == False
 
 class TestSegment:
 
@@ -96,6 +106,17 @@ class TestSegment:
     def test_add2(self):
         assert isinstance(self.f.add(R2Point(0.0, 1.0)), Polygon)
 
+    # Точка принадлежит концам двуугольника
+    def test_point_is_inside4(self):
+        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == True
+
+    # Точка принадлежит двуугольнику
+    def test_point_is_inside5(self):
+        assert self.f.point_is_inside(R2Point(0.5, 0.0)) == True
+
+    # Точка не принадлежит двуугольнику
+    def test_point_is_inside6(self):
+        assert self.f.point_is_inside(R2Point(3.0, 0.0)) == False
 
 class TestPolygon:
 
@@ -119,16 +140,16 @@ class TestPolygon:
     #   изначально их три
     def test_vertexes1(self):
         assert self.f.points.size() == 3
-    #   добавление точки внутрь многоугольника не меняет их количества
 
+    #   добавление точки внутрь многоугольника не меняет их количества
     def test_vertexes2(self):
         assert self.f.add(R2Point(0.1, 0.1)).points.size() == 3
-    #   добавление другой точки может изменить их количество
 
+    #   добавление другой точки может изменить их количество
     def test_vertexes3(self):
         assert self.f.add(R2Point(1.0, 1.0)).points.size() == 4
-    #   изменения выпуклой оболочки могут и уменьшать их количество
 
+    #   изменения выпуклой оболочки могут и уменьшать их количество
     def test_vertexes4(self):
         assert self.f.add(
             R2Point(
@@ -149,8 +170,8 @@ class TestPolygon:
     #   изначально он равен сумме длин сторон
     def test_perimeter1(self):
         assert self.f.perimeter() == approx(2.0 + sqrt(2.0))
-    #   добавление точки может его изменить
 
+    #   добавление точки может его изменить
     def test_perimeter2(self):
         assert self.f.add(R2Point(1.0, 1.0)).perimeter() == approx(4.0)
 
@@ -158,7 +179,19 @@ class TestPolygon:
     #   изначально она равна (неориентированной) площади треугольника
     def test_аrea1(self):
         assert self.f.area() == approx(0.5)
-    #   добавление точки может увеличить площадь
 
+    #   добавление точки может увеличить площадь
     def test_area2(self):
         assert self.f.add(R2Point(1.0, 1.0)).area() == approx(1.0)
+
+    # Точка принадлежит стороне многоугольника
+    def test_point_is_inside7(self):
+        assert self.f.point_is_inside(R2Point(0.5, 0.0)) == True
+
+    # Точка лежит внутри многоугольника
+    def test_point_is_inside8(self):
+        assert self.f.point_is_inside(R2Point(0.5, 0.1)) == True
+
+    # Точка не лежит внутри многоугльника
+    def test_point_is_inside9(self):
+        assert self.f.point_is_inside(R2Point(2.0, -1.0)) == False
