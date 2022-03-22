@@ -31,12 +31,17 @@ setattr(Polygon, 'draw', polygon_draw)
 tk = TkDrawer()
 f = Void()
 tk.clean()
-
+print('Введите координаты точки') 
+point = R2Point() 
+print('Введите координаты точек, образующж оболочку')
+tk.draw_point(point)
 try:
     while True:
         f = f.add(R2Point())
         tk.clean()
+        tk.draw_point(point)
         f.draw(tk)
+        print(f"{f.point_is_inside(point)}")
         print(f"S = {f.area()}, P = {f.perimeter()}\n")
 except(EOFError, KeyboardInterrupt):
     print("\nStop")
