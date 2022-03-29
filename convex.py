@@ -111,6 +111,7 @@ class Polygon(Figure):
             self.points.push_last(p)
 
             # добавление двух новых рёбер
+            ''' проверять принадлежность здесь  '''
             self._perimeter += t.dist(self.points.first()) + \
                 t.dist(self.points.last())
             self.points.push_first(t)

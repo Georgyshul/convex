@@ -33,7 +33,7 @@ f = Void()
 tk.clean()
 print('Введите координаты точки') 
 point = R2Point() 
-print('Введите координаты точек, образующж оболочку')
+print('Введите координаты точек, образующих оболочку')
 tk.draw_point(point)
 try:
     while True:
@@ -41,7 +41,8 @@ try:
         tk.clean()
         tk.draw_point(point)
         f.draw(tk)
-        print(f"{f.point_is_inside(point)}")
+        t = f.point_is_inside(point)
+        print(f"{t}")
         print(f"S = {f.area()}, P = {f.perimeter()}\n")
 except(EOFError, KeyboardInterrupt):
     print("\nStop")
