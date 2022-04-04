@@ -5,7 +5,7 @@ from convex import Void
 f = Void()
 print('Введите координаты точки')
 point = R2Point()
-print('Введите координаты точек, образующж оболочку')
+print('Введите координаты точек, образующих оболочку')
 try:
     while True:
         a = R2Point()

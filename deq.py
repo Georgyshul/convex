@@ -35,6 +35,11 @@ class Deq:
     # Первый элемент дека
     def first(self):
         return self.array[0]
+    
+    # Второй элемент дека
+    def second(self):
+        return self.array[1]
+
 
 
 if __name__ == "__main__":
