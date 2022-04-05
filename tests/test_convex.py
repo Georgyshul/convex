@@ -30,10 +30,6 @@ class TestVoid:
     def test_add(self):
         assert isinstance(self.f.add(R2Point(0.0, 0.0)), Point)
 
-    # Точка не принадлежит оболочке типа Void
-    def test_point_is_inside1(self):
-        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == False
-
 class TestPoint:
 
     # Инициализация (выполняется для каждого из тестов класса)
@@ -195,3 +191,24 @@ class TestPolygon:
     # Точка не лежит внутри многоугльника
     def test_point_is_inside9(self):
         assert self.f.point_is_inside(R2Point(2.0, -1.0)) == False
+
+    # Точка лежит внутри многоугльника
+    def test_point_is_inside10(self):
+        self.f = self.f.add(
+            R2Point(1.0, 1.0))
+        assert self.f.point_is_inside(R2Point(1.0, 1.0)) == True
+
+    # Точка не лежит внутри многоугльника
+    def test_point_is_inside11(self):
+        self.f = self.f.add(
+            R2Point(1.0, 1.0))
+        assert self.f.point_is_inside(R2Point(2.0, 1.0)) == False
+
+    # Точка лежит внутри многоугльника
+    def test_point_is_inside12(self):
+        self.f = self.f.add(R2Point(2.0, 0.5)).add(R2Point(0.5, 2.0))
+        assert self.f.point_is_inside(R2Point(0.5, 1.1)) == True
+
+
+
+

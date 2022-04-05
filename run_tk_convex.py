@@ -35,6 +35,7 @@ print('Введите координаты точки')
 point = R2Point() 
 print('Введите координаты точек, образующих оболочку')
 tk.draw_point(point)
+print('Введите координаты точек, образующих оболочку')
 try:
     while True:
         f = f.add(R2Point())

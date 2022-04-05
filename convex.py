@@ -61,6 +61,8 @@ class Polygon(Figure):
     def __init__(self, a, b, c):
         self.points = Deq()
         self.points.push_first(b)
+        self.inside = False
+        self.changed = True
         if b.is_light(a, c):
             self.points.push_first(a)
             self.points.push_last(c)
@@ -84,9 +86,14 @@ class Polygon(Figure):
             if t.is_light(self.points.last(), self.points.first()):
                 break
             self.points.push_last(self.points.pop_first())
+            
+        # освещенных ребер нет(оболочка не изменяется)
+        if not(t.is_light(self.points.last(), self.points.first())):
+            self.changed = False
 
         # хотя бы одно освещённое ребро есть
         if t.is_light(self.points.last(), self.points.first()):
+            self.changed = True
 
             # учёт удаления ребра, соединяющего конец и начало дека
             self._perimeter -= self.points.first().dist(self.points.last())
@@ -111,19 +118,28 @@ class Polygon(Figure):
             self.points.push_last(p)
 
             # добавление двух новых рёбер
-            ''' проверять принадлежность здесь  '''
             self._perimeter += t.dist(self.points.first()) + \
                 t.dist(self.points.last())
             self.points.push_first(t)
-
         return self
 
     def point_is_inside(self, t):
-        for n in range(self.points.size()):
-            if t.is_light(self.points.last(), self.points.first()):
-                break
-            self.points.push_last(self.points.pop_first())
-        return not t.is_light(self.points.last(), self.points.first())
+        if self.inside:
+            pass
+        elif self.inside == False and self.changed == True:
+            vertexes = Deq()
+            vertexes.push_first(self.points.second())
+            vertexes.push_first(self.points.first())
+            vertexes.push_last(self.points.last())
+            for n in range(vertexes.size()):
+                if t.is_light(vertexes.last(), vertexes.first()):
+                    break
+                vertexes.push_last(vertexes.pop_first())     
+            self.inside = not(t.is_light(vertexes.last(), vertexes.first()))
+        else:
+            pass
+        return self.inside
+
 
 
 if __name__ == "__main__":
