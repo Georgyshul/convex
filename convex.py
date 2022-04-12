@@ -11,11 +11,16 @@ class Figure:
     def area(self):
         return 0.0
 
+    def point_is_inside(self):
+        return None
+
+
 class Void(Figure):
     """ "Hульугольник" """
 
     def add(self, p):
         return Point(p)
+
 
 class Point(Figure):
     """ "Одноугольник" """
@@ -26,8 +31,9 @@ class Point(Figure):
     def add(self, q):
         return self if self.p == q else Segment(self.p, q)
 
-    def point_is_inside(self, q):
-        return self.p == q
+    def point_is_inside(self):
+        return self.p == self.fixed_point
+
 
 class Segment(Figure):
     """ "Двуугольник" """
@@ -48,11 +54,11 @@ class Segment(Figure):
         else:
             return self
 
-    def point_is_inside(self, r):
-        if R2Point.is_triangle(self.p, self.q, r):
+    def point_is_inside(self):
+        if R2Point.is_triangle(self.p, self.q, self.fixed_point):
             return False
         else:
-            return r.is_inside(self.p, self.q)
+            return self.fixed_point.is_inside(self.p, self.q)
 
 
 class Polygon(Figure):
@@ -86,7 +92,7 @@ class Polygon(Figure):
             if t.is_light(self.points.last(), self.points.first()):
                 break
             self.points.push_last(self.points.pop_first())
-            
+
         # освещенных ребер нет(оболочка не изменяется)
         if not(t.is_light(self.points.last(), self.points.first())):
             self.changed = False
@@ -123,23 +129,16 @@ class Polygon(Figure):
             self.points.push_first(t)
         return self
 
-    def point_is_inside(self, t):
-        if self.inside:
-            pass
-        elif self.inside == False and self.changed == True:
-            vertexes = Deq()
-            vertexes.push_first(self.points.second())
-            vertexes.push_first(self.points.first())
-            vertexes.push_last(self.points.last())
-            for n in range(vertexes.size()):
-                if t.is_light(vertexes.last(), vertexes.first()):
-                    break
-                vertexes.push_last(vertexes.pop_first())     
-            self.inside = not(t.is_light(vertexes.last(), vertexes.first()))
-        else:
-            pass
+    def point_is_inside(self):
+        if not(self.inside) and self.changed == True:
+            if not(self.fixed_point.is_light(self.points.last(),
+                                             self.points.first())) and \
+               not(self.fixed_point.is_light(self.points.first(),
+                                             self.points.second())) and \
+               not(self.fixed_point.is_light(self.points.second(),
+                                             self.points.last())):
+                self.inside = True
         return self.inside
-
 
 
 if __name__ == "__main__":

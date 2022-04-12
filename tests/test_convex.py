@@ -30,11 +30,13 @@ class TestVoid:
     def test_add(self):
         assert isinstance(self.f.add(R2Point(0.0, 0.0)), Point)
 
+
 class TestPoint:
 
     # Инициализация (выполняется для каждого из тестов класса)
     def setup_method(self):
         self.f = Point(R2Point(0.0, 0.0))
+        Figure.fixed_point = R2Point(0.0, 0.0)
 
     # Одноугольник является фигурой
     def test_figure(self):
@@ -60,19 +62,22 @@ class TestPoint:
     def test_add2(self):
         assert isinstance(self.f.add(R2Point(1.0, 0.0)), Segment)
 
-    # Точка принадлежит выпуклой оболочке, состоящей из точки с такими же координатами
+    # Точка принадлежит выпуклой оболочке
     def test_point_is_inside2(self):
-        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == True
+        assert self.f.point_is_inside() is True
 
     # Иначе точка не принадлежит оболочке
     def test_point_is_inside3(self):
-        assert self.f.point_is_inside(R2Point(1.0, 0.0)) == False
+        Figure.fixed_point = R2Point(1.0, 0.0)
+        assert self.f.point_is_inside() is False
+
 
 class TestSegment:
 
     # Инициализация (выполняется для каждого из тестов класса)
     def setup_method(self):
         self.f = Segment(R2Point(0.0, 0.0), R2Point(1.0, 0.0))
+        Figure.fixed_point = R2Point(0.0, 0.0)
 
     # Двуугольник является фигурой
     def test_figure(self):
@@ -104,15 +109,18 @@ class TestSegment:
 
     # Точка принадлежит концам двуугольника
     def test_point_is_inside4(self):
-        assert self.f.point_is_inside(R2Point(0.0, 0.0)) == True
+        assert self.f.point_is_inside() is True
 
     # Точка принадлежит двуугольнику
     def test_point_is_inside5(self):
-        assert self.f.point_is_inside(R2Point(0.5, 0.0)) == True
+        Figure.fixed_point = R2Point(0.5, 0.0)
+        assert self.f.point_is_inside() is True
 
     # Точка не принадлежит двуугольнику
     def test_point_is_inside6(self):
-        assert self.f.point_is_inside(R2Point(3.0, 0.0)) == False
+        Figure.fixed_point = R2Point(3.0, 0.0)
+        assert self.f.point_is_inside() is False
+
 
 class TestPolygon:
 
@@ -123,6 +131,7 @@ class TestPolygon:
                 0.0, 0.0), R2Point(
                 1.0, 0.0), R2Point(
                 0.0, 1.0))
+        Figure.fixed_point = R2Point(0.5, 0.0)
 
     # Многоугольник является фигурой
     def test_figure(self):
@@ -182,33 +191,34 @@ class TestPolygon:
 
     # Точка принадлежит стороне многоугольника
     def test_point_is_inside7(self):
-        assert self.f.point_is_inside(R2Point(0.5, 0.0)) == True
+        assert self.f.point_is_inside() is True
 
     # Точка лежит внутри многоугольника
     def test_point_is_inside8(self):
-        assert self.f.point_is_inside(R2Point(0.5, 0.1)) == True
+        Figure.fixed_point = R2Point(0.5, 0.1)
+        assert self.f.point_is_inside() is True
 
     # Точка не лежит внутри многоугльника
     def test_point_is_inside9(self):
-        assert self.f.point_is_inside(R2Point(2.0, -1.0)) == False
+        Figure.fixed_point = R2Point(2.0, -1.0)
+        assert self.f.point_is_inside() is False
 
     # Точка лежит внутри многоугльника
     def test_point_is_inside10(self):
         self.f = self.f.add(
             R2Point(1.0, 1.0))
-        assert self.f.point_is_inside(R2Point(1.0, 1.0)) == True
+        Figure.fixed_point = R2Point(1.0, 1.0)
+        assert self.f.point_is_inside() is True
 
     # Точка не лежит внутри многоугльника
     def test_point_is_inside11(self):
         self.f = self.f.add(
             R2Point(1.0, 1.0))
-        assert self.f.point_is_inside(R2Point(2.0, 1.0)) == False
+        Figure.fixed_point = R2Point(2.0, 1.0)
+        assert self.f.point_is_inside() is False
 
     # Точка лежит внутри многоугльника
     def test_point_is_inside12(self):
         self.f = self.f.add(R2Point(2.0, 0.5)).add(R2Point(0.5, 2.0))
-        assert self.f.point_is_inside(R2Point(0.5, 1.1)) == True
-
-
-
-
+        Figure.fixed_point = R2Point(0.5, 1.1)
+        assert self.f.point_is_inside() is True

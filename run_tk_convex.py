@@ -1,7 +1,7 @@
 #!/usr/bin/env -S python3 -B
 from tk_drawer import TkDrawer
 from r2point import R2Point
-from convex import Void, Point, Segment, Polygon
+from convex import Figure, Void, Point, Segment, Polygon
 
 
 def void_draw(self, tk):
@@ -31,18 +31,17 @@ setattr(Polygon, 'draw', polygon_draw)
 tk = TkDrawer()
 f = Void()
 tk.clean()
-print('Введите координаты точки') 
-point = R2Point() 
-print('Введите координаты точек, образующих оболочку')
-tk.draw_point(point)
-print('Введите координаты точек, образующих оболочку')
+print("Заданная точка")
+Figure.fixed_point = R2Point()
+tk.draw_point(Figure.fixed_point)
+print("\nТочки плоскости")
 try:
     while True:
         f = f.add(R2Point())
         tk.clean()
-        tk.draw_point(point)
+        tk.draw_point(Figure.fixed_point)
         f.draw(tk)
-        t = f.point_is_inside(point)
+        t = f.point_is_inside()
         print(f"{t}")
         print(f"S = {f.area()}, P = {f.perimeter()}\n")
 except(EOFError, KeyboardInterrupt):
